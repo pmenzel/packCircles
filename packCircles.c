@@ -306,6 +306,8 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 	  }
 	}
 
+	return a;
+
 }
 
 
@@ -354,7 +356,6 @@ int main (int argc, char **argv) {
 	
 	int num_circles = 0;
 	int counter = 0;
-	char * inputline;
 	char *line = NULL;
 	size_t size = 0;;
 	ssize_t length_line;

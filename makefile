@@ -1,10 +1,10 @@
 CC = gcc
-CCFLAGS = -O3 -g
+CCFLAGS = -Wall -O3 -g
 LDLIBS = -lm
 
 all: packCircles
 
-packCircles: makefile 
+packCircles: makefile packCircles.c
 	$(CC) $(CCFLAGS) -o packCircles packCircles.c $(LDLIBS) 
 
 clean: 
