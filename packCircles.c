@@ -6,7 +6,7 @@
  *  ABOUT
  *  ********
  *	packCircles arranges a list of circles, which are denoted by their radii,
- *	by consecutively arranging them externally tangent to two previously placed
+ *	by consecutively placing each circle externally tangent to two previously placed
  *	circles avoiding overlaps.
  *	The output is an SVG file.
  *

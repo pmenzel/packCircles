@@ -8,7 +8,7 @@ Peter Menzel <pmenzel@gmail.com>
 
 ##About
 packCircles arranges a list of circles, which are denoted by their radii,
-by consecutively arranging them externally tangent to two previously placed
+by consecutively placing each circle externally tangent to two previously placed
 circles avoiding overlaps.
 The output is an SVG file.
 
@@ -19,6 +19,8 @@ in [Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 
 
 Source code is partially based on a implementation of this algorithm
 in the [ProtoVis javascript library](http://mbostock.github.io/protovis/).
+
+![Example](pmenzel.github.com/packCircles/example.png)
 
 ##Usage 
 Download:
