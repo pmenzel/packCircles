@@ -13,7 +13,7 @@
  *	The program implements the algorithm described in the paper:
  *  "Visualization of large hierarchical data by circle packing" 
  *  by Weixin Wang, Hui Wang, Guozhong Dai, and Hongan Wang
- *  in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, Pages 517-520
+ *  in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 2006, pp. 517-520
  *  https://dl.acm.org/citation.cfm?id=1124851
  
  *  Source code is partially based on a implementation of this algorithm
