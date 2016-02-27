@@ -63,15 +63,8 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 	double width = (bb_topright->x + abs(bb_bottomleft->x)) + 2* spacing;
 	int viewport_width = 640;
 	int viewport_height = 480;
-	float stroke_width = 4.0;
-	/* hack for reducing stroke-width for small input numbers */
-	//TODO need proper scaling of stroke-width with the size of the image
-	if(height < viewport_height || width < viewport_width)
-		stroke_width = 2.0;
-	if(height < viewport_height / 2 || width < viewport_width / 2)
-		stroke_width = 1.0;
-	if(height < viewport_height / 3 || width < viewport_width / 3)
-		stroke_width = 0.5;
+	// scaling of stroke-width with the size of the image
+	float stroke_width = viewport_width / 400 * (width/viewport_width);
 
 	printf("<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"%i\" width=\"%i\" viewBox=\"0 0 %.3f %.3f\" preserveAspectRatio=\"xMidYMid meet\">\n",viewport_height,viewport_width,width,height);
 	printf("<defs>\n");
