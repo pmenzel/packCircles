@@ -105,7 +105,7 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 	printf("</svg>\n");
 }
 
-static node_t * alloc_node(long size_, int num_){
+static node_t * alloc_node(unsigned long size_, int num_){
   node_t * n = (node_t *)malloc(sizeof(node_t));
   n->size = size_; // this corresponds to the circle area
   //calculate radius from circle area 
@@ -372,27 +372,27 @@ int main (int argc, char **argv) {
 		char * firsttab = strchr(line,'\t');
 		if(firsttab)  { 
 			char * secondtab = strchr(firsttab+1,'\t');
-			int length_color = 0;
+			unsigned long length_color = 0;
 			if(secondtab)  { 
-				length_color = secondtab-firsttab; //this pans out to the length of the chars between the tabs + 1 for \0 at the end
-				int length_name = line + length_line - secondtab - 1 ; // -1 at the end to exclude the newline
+				length_color = (long unsigned int)(secondtab - firsttab); //this pans out to the length of the chars between the tabs + 1 for \0 at the end
+				unsigned long length_name = (long unsigned int)(line + length_line - secondtab - 1); // -1 at the end to exclude the newline
 				if(length_name > 0) {
 					char * name = (char *)malloc(sizeof(char) * length_name);
 					strncpy(name, secondtab+1, length_name - 1 );
 					name[length_name-1] = '\0';
 					n->name = name;
-					if(debug) fprintf(stderr,"len_name=%i, name=%s\n",length_name,name);
+					if(debug) fprintf(stderr,"len_name=%lu, name=%s\n",length_name,name);
 				}
 			}
 			else { /* color is from firsttab until eol */
-				length_color = line + length_line - firsttab - 1;
+				length_color = (long unsigned int)(line + length_line - firsttab - 1);
 			}
 			if(length_color > 0) {
 				char * color = (char *)malloc(sizeof(char) * length_color);
 				strncpy(color, firsttab+1, length_color - 1 );
 				color[length_color-1] = '\0';
 				n->color = color;
-				if(debug) fprintf(stderr,"len_color = %i, color=%s\n",length_color,color);
+				if(debug) fprintf(stderr,"len_color = %lu, color=%s\n",length_color,color);
 			}
 
 		}
