@@ -69,8 +69,8 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 	printf("<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"%i\" width=\"%i\" viewBox=\"0 0 %.5f %.5f\" preserveAspectRatio=\"xMidYMid meet\">\n",viewport_height,viewport_width,width,height);
 	printf("<defs>\n");
 	printf("<style type=\"text/css\"><![CDATA[\n");
-	printf("  .circle_c { fill:#eee; stroke: #444; stroke-width: %.2f }\n",stroke_width);
-	// optionally:  printf("  .circle_c:hover { stroke: #444; stroke-width: %.2f }\n",2*stroke_width);
+	printf("  .circle_c { fill:#eee; stroke: #444; stroke-width: %.5f }\n",stroke_width);
+	// optionally:  printf("  .circle_c:hover { stroke: #444; stroke-width: %.5f }\n",2*stroke_width);
 	printf("]]></style>\n");
 	printf("</defs>\n");
 	printf("<g transform=\"translate(%.5f,%.5f)\">\n",(width)/2.0,(height)/2.0);
