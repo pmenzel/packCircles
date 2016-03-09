@@ -58,25 +58,25 @@ void usage(char *progname) {
 
 
 static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t * bb_bottomleft, int debug) {
-	double spacing = 5.0;
-	double height = (bb_topright->y + abs(bb_bottomleft->y)) + 2* spacing;
-	double width = (bb_topright->x + abs(bb_bottomleft->x)) + 2* spacing;
+	double spacing = MAX(bb_topright->y + fabs(bb_bottomleft->y), bb_topright->x + fabs(bb_bottomleft->x)) / 400.0;
+	double height = (bb_topright->y + fabs(bb_bottomleft->y)) + 2 * spacing;
+	double width = (bb_topright->x + fabs(bb_bottomleft->x)) + 2 * spacing;
 	int viewport_width = 640;
 	int viewport_height = 480;
 	// scaling of stroke-width with the size of the image
-	float stroke_width = viewport_width / 400 * (width/viewport_width);
+	double stroke_width = viewport_width / 400 * (width/viewport_width);
 
-	printf("<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"%i\" width=\"%i\" viewBox=\"0 0 %.3f %.3f\" preserveAspectRatio=\"xMidYMid meet\">\n",viewport_height,viewport_width,width,height);
+	printf("<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"%i\" width=\"%i\" viewBox=\"0 0 %.5f %.5f\" preserveAspectRatio=\"xMidYMid meet\">\n",viewport_height,viewport_width,width,height);
 	printf("<defs>\n");
 	printf("<style type=\"text/css\"><![CDATA[\n");
 	printf("  .circle_c { fill:#eee; stroke: #444; stroke-width: %.2f }\n",stroke_width);
 	// optionally:  printf("  .circle_c:hover { stroke: #444; stroke-width: %.2f }\n",2*stroke_width);
 	printf("]]></style>\n");
 	printf("</defs>\n");
-	printf("<g transform=\"translate(%.3f,%.3f)\">\n",(width)/2,(height)/2);
+	printf("<g transform=\"translate(%.5f,%.5f)\">\n",(width)/2.0,(height)/2.0);
 
-	double offset_x = (bb_bottomleft->x + bb_topright->x) / 2;
-	double offset_y = (bb_bottomleft->y + bb_topright->y) / 2;
+	double offset_x = (bb_bottomleft->x + bb_topright->x) / 2.0;
+	double offset_y = (bb_bottomleft->y + bb_topright->y) / 2.0;
 
 	node_t * n = first; 
 	while(n) {
@@ -314,11 +314,11 @@ int main (int argc, char **argv) {
 	node_t * lastinsertednode = NULL;
 
   node_t * bb_bottomleft = alloc_node(0,-1);
-	bb_bottomleft->y = INT_MAX;
-	bb_bottomleft->x = INT_MAX;
+	bb_bottomleft->y = (double)INT_MAX;
+	bb_bottomleft->x = (double)INT_MAX;
   node_t * bb_topright = alloc_node(0,-1);
-	bb_topright->y = INT_MIN;
-	bb_topright->x = INT_MIN;
+	bb_topright->y = (double)INT_MIN;
+	bb_topright->x = (double)INT_MIN;
 
 	/* parse command line */
   opterr = 0;
