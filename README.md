@@ -7,9 +7,9 @@ Peter Menzel <pmenzel@gmail.com>
 
 
 ##About
-packCircles arranges a list of circles, which are denoted by their radii,
+packCircles arranges a list of circles, which are denoted by their area,
 by consecutively placing each circle externally tangent to two previously placed
-circles avoiding overlaps.
+circles at the point closest to the midpoint of the plot.
 The output is an SVG file.
 
 The program implements the algorithm described in the paper:
@@ -20,7 +20,7 @@ in [Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 
 Source code is partially based on a implementation of this algorithm
 in the [ProtoVis javascript library](http://mbostock.github.io/protovis/).
 
-![Example](https://pmenzel.github.com/packCircles/example.png)
+![Example](https://pmenzel.github.com/packCircles/example.gif)
 
 ##Usage 
 Download:
