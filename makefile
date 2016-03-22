@@ -4,7 +4,7 @@ LDLIBS = -lm
 
 all: packCircles
 
-packCircles: makefile packCircles.c
+packCircles: makefile packCircles.c packCircles.h
 	$(CC) $(CCFLAGS) -o packCircles packCircles.c $(LDLIBS) 
 
 clean: 

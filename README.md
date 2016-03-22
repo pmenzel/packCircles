@@ -42,7 +42,10 @@ fill color and the name of each circle, which will be used in the title element
 for each circle.  Colors need to be valid CSS color names, for example: `red`,
 `#12AB56`, or `rgb(123,89,12)`.
 
-
+The option `-c` can be used to generate colors programmatically for circles with
+no assigned colors in the input file. Colors are selected from the HSV color space
+by applying [this method](http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/) for iteratively
+choosing new values for H using the Golden Ratio, and using fixed values for S (0.5) and V (0.9).
 
 ###License
 

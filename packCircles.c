@@ -41,6 +41,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 #include "packCircles.h"
 
@@ -52,10 +53,44 @@ void usage(char *progname) {
 	fprintf(stderr, "   -i FILENAME   Name of input file\n");
 	fprintf(stderr, "\n");
 	fprintf(stderr, "Optional arguments:\n");
+	fprintf(stderr, "   -c            Generate colors programmatically if not defined in input file.\n");
 	fprintf(stderr, "   -d            Enable debug output.\n");
 	exit(EXIT_FAILURE);
 }
 
+// h,s,v must be floats in the intervall [0,1[
+static void hsv2rgb(double h, double s, double v, uint * r, uint * b, uint * g) {
+
+    if(s==0.0) {
+			*r = (uint)floor(v*256); *g = (uint)floor(v*256); *b = (uint)floor(v*256);
+			return;
+    }
+
+    int i = (int)floor(h * 6);
+    double f = h * 6 - i;
+    double p = v * ( 1 - s );
+    double q = v * ( 1 - s * f );
+    double t = v * ( 1 - s * (1 - f));
+
+    if(i == 0) {
+			*r = (uint)floor(v*256); *g = (uint)floor(t*256); *b = (uint)floor(p*256);
+    }
+		else if(i == 1) {
+			*r = (uint)floor(q*256); *g = (uint)floor(v*256); *b = (uint)floor(p*256);
+    }
+		else if(i == 2) {
+			*r = (uint)floor(p*256); *g = (uint)floor(v*256); *b = (uint)floor(t*256);
+    }
+		else if(i == 3) {
+			*r = (uint)floor(p*256); *g = (uint)floor(q*256); *b = (uint)floor(v*256);
+    }
+		else if(i == 4) {
+			*r = (uint)floor(t*256); *g = (uint)floor(p*256); *b = (uint)floor(v*256);
+    }
+    else {
+			*r = (uint)floor(v*256); *g = (uint)floor(p*256); *b = (uint)floor(q*256);
+    }
+}
 
 static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t * bb_bottomleft, int debug) {
 	double spacing = MAX(bb_topright->y + fabs(bb_bottomleft->y), bb_topright->x + fabs(bb_bottomleft->x)) / 400.0;
@@ -309,6 +344,7 @@ int main (int argc, char **argv) {
 
   char *inputfilename = NULL;
 	int debug = 0;
+	int generate_colors = 0;
 
 	node_t * firstnode = NULL;
 	node_t * lastinsertednode = NULL;
@@ -323,13 +359,16 @@ int main (int argc, char **argv) {
 	/* parse command line */
   opterr = 0;
 	int optc;
-  while((optc = getopt (argc, argv, "di:")) != -1) {
+  while((optc = getopt (argc, argv, "cdi:")) != -1) {
     switch(optc) {
       case 'i':
         inputfilename = optarg;
         break;
 			case 'd':
 				debug = 1;
+				break;
+			case 'c':
+				generate_colors = 1;
 				break;
       default:
         usage(argv[0]);
@@ -349,6 +388,8 @@ int main (int argc, char **argv) {
 	
 	int num_circles = 0;
 	int counter = 0;
+	srand((uint)time(NULL));
+	double h = generate_colors ? (double)rand()/(double)(RAND_MAX) : 0.0;
 	char *line = NULL;
 	size_t size = 0;;
 	ssize_t length_line;
@@ -394,7 +435,16 @@ int main (int argc, char **argv) {
 				n->color = color;
 				if(debug) fprintf(stderr,"len_color = %lu, color=%s\n",length_color,color);
 			}
-
+		}
+		if(generate_colors && n->color==NULL) {
+			uint r,g,b;
+			hsv2rgb(h,0.5,0.95,&r,&g,&b);
+			h += 0.618033988749895; // golden ration conjugate
+			h = fmod(h,1);
+			char * color = (char *)malloc(sizeof(char) * 17);
+			color[16] = '\0';
+			sprintf(color, "rgb(%.3u,%.3u,%.3u)",r,g,b);
+			n->color = color;
 		}
 	}
 	free(line);
