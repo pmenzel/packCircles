@@ -15,7 +15,7 @@
  *  by Weixin Wang, Hui Wang, Guozhong Dai, and Hongan Wang
  *  in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 2006, pp. 517-520
  *  https://dl.acm.org/citation.cfm?id=1124851
- 
+ *
  *  Source code is partially based on a implementation of this algorithm
  *  in the ProtoVis javascript library:
  *  http://mbostock.github.io/protovis/
@@ -61,35 +61,35 @@ void usage(char *progname) {
 // h,s,v must be floats in the intervall [0,1[
 static void hsv2rgb(double h, double s, double v, uint * r, uint * b, uint * g) {
 
-    if(s==0.0) {
-			*r = (uint)floor(v*256); *g = (uint)floor(v*256); *b = (uint)floor(v*256);
-			return;
-    }
+	if(s==0.0) {
+		*r = (uint)floor(v*256); *g = (uint)floor(v*256); *b = (uint)floor(v*256);
+		return;
+	}
 
-    int i = (int)floor(h * 6);
-    double f = h * 6 - i;
-    double p = v * ( 1 - s );
-    double q = v * ( 1 - s * f );
-    double t = v * ( 1 - s * (1 - f));
+	int i = (int)floor(h * 6);
+	double f = h * 6 - i;
+	double p = v * ( 1 - s );
+	double q = v * ( 1 - s * f );
+	double t = v * ( 1 - s * (1 - f));
 
-    if(i == 0) {
-			*r = (uint)floor(v*256); *g = (uint)floor(t*256); *b = (uint)floor(p*256);
-    }
-		else if(i == 1) {
-			*r = (uint)floor(q*256); *g = (uint)floor(v*256); *b = (uint)floor(p*256);
-    }
-		else if(i == 2) {
-			*r = (uint)floor(p*256); *g = (uint)floor(v*256); *b = (uint)floor(t*256);
-    }
-		else if(i == 3) {
-			*r = (uint)floor(p*256); *g = (uint)floor(q*256); *b = (uint)floor(v*256);
-    }
-		else if(i == 4) {
-			*r = (uint)floor(t*256); *g = (uint)floor(p*256); *b = (uint)floor(v*256);
-    }
-    else {
-			*r = (uint)floor(v*256); *g = (uint)floor(p*256); *b = (uint)floor(q*256);
-    }
+	if(i == 0) {
+		*r = (uint)floor(v*256); *g = (uint)floor(t*256); *b = (uint)floor(p*256);
+	}
+	else if(i == 1) {
+		*r = (uint)floor(q*256); *g = (uint)floor(v*256); *b = (uint)floor(p*256);
+	}
+	else if(i == 2) {
+		*r = (uint)floor(p*256); *g = (uint)floor(v*256); *b = (uint)floor(t*256);
+	}
+	else if(i == 3) {
+		*r = (uint)floor(p*256); *g = (uint)floor(q*256); *b = (uint)floor(v*256);
+	}
+	else if(i == 4) {
+		*r = (uint)floor(t*256); *g = (uint)floor(p*256); *b = (uint)floor(v*256);
+	}
+	else {
+		*r = (uint)floor(v*256); *g = (uint)floor(p*256); *b = (uint)floor(q*256);
+	}
 }
 
 static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t * bb_bottomleft, int debug) {
@@ -141,21 +141,21 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 }
 
 static node_t * alloc_node(unsigned long size_, int num_){
-  node_t * n = (node_t *)malloc(sizeof(node_t));
-  n->size = size_; // this corresponds to the circle area
-  //calculate radius from circle area 
-  // A = pi * r^2   ->  r = sqrt(A/pi)
-  double r = sqrt((double)size_ / M_PI);
-  n->radius = r;
-  n->next = NULL;
-  n->prev = NULL;
-  n->insertnext = NULL;
-  n->color = NULL;
-  n->name = NULL;
+	node_t * n = (node_t *)malloc(sizeof(node_t));
+	n->size = size_; // this corresponds to the circle area
+	//calculate radius from circle area 
+	// A = pi * r^2   ->  r = sqrt(A/pi)
+	double r = sqrt((double)size_ / M_PI);
+	n->radius = r;
+	n->next = NULL;
+	n->prev = NULL;
+	n->insertnext = NULL;
+	n->color = NULL;
+	n->name = NULL;
 	n->x = 0.0;
 	n->y = 0.0;
 	n->num = num_;
-  return n;
+	return n;
 }
 
 static void bound(node_t * n, node_t * topright, node_t * bottomleft) {
@@ -171,27 +171,27 @@ static double distance(node_t * a) {
 
 
 static void place(node_t * a, node_t * b, node_t * c) {
-  double da = b->radius + c->radius;
-  double db = a->radius + c->radius;
-  double dx = b->x - a->x;
-  double dy = b->y - a->y;
-  double dc = sqrt(dx * dx + dy * dy);
-  double cos = (db * db + dc * dc - da * da) / (2 * db * dc);
-  double theta = acos(cos);
-  double x = cos * db;
-  double h = sin(theta) * db;
-  dx /= dc;
-  dy /= dc;
-  c->x = a->x + x * dx + h * dy;
-  c->y = a->y + x * dy - h * dx;
+	double da = b->radius + c->radius;
+	double db = a->radius + c->radius;
+	double dx = b->x - a->x;
+	double dy = b->y - a->y;
+	double dc = sqrt(dx * dx + dy * dy);
+	double cos = (db * db + dc * dc - da * da) / (2 * db * dc);
+	double theta = acos(cos);
+	double x = cos * db;
+	double h = sin(theta) * db;
+	dx /= dc;
+	dy /= dc;
+	c->x = a->x + x * dx + h * dy;
+	c->y = a->y + x * dy - h * dx;
 }
 
 static int intersects(node_t * a, node_t * b) {
 	double dx = b->x - a->x;
 	double dy = b->y - a->y;
-  double dr = (double)a->radius + (double)b->radius;
- 	if((dr * dr - dx * dx - dy * dy) > 0.001) // overlap is bigger than epsilon
- 		return 1;
+	double dr = (double)a->radius + (double)b->radius;
+	if((dr * dr - dx * dx - dy * dy) > 0.001) // overlap is bigger than epsilon
+		return 1;
 	else
 		return 0; 
 }
@@ -213,8 +213,8 @@ static void splice(node_t * a, node_t * b) {
 
 static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * bb_bottomleft, int debug) {
 
-  /* Create first circle. */
-  node_t * a = firstnode;
+	/* Create first circle. */
+	node_t * a = firstnode;
 	node_t * b = NULL;
 	node_t * c = NULL;
 
@@ -227,7 +227,7 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 	b->x = b->radius;
 	b->y = 0;
 	bound(b,bb_topright,bb_bottomleft);
-	
+
 	/* Create third circle. */
 	if(!b->insertnext) { return a; }
 	c = b->insertnext;
@@ -244,17 +244,17 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 	c->next = b;
 	c->prev = a;
 	b = c;
-	
+
 	//fprintf(stderr,"a=%i\n",a->num);
 	//fprintf(stderr,"b=%i\n",b->num);
 	//fprintf(stderr,"c=%i\n",c->num);
- 	
+
 	/* add remaining nodes */
- 	int skip = 0;
+	int skip = 0;
 	c = c->insertnext;
 	while(c) {
 		if(debug) fprintf(stderr,"Inserting node %i ------------------------\n",c->num);
-	
+
 		// Determine the node a in the chain, which is nearest to the center
 		// The new node c will be placed next to a (unless overlap occurs)
 		// NB: This search is only done the first time for each new node, i.e.
@@ -282,12 +282,12 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 
 		/* a corresponds to C_m, and b corresponds to C_n in the paper */
 		place(a,b,c);
-		
+
 		/* for debugging: initial placement of c that may ovelap */
 		//printf("<circle cx=\"%.5f\" cy=\"%.5f\" r=\"%.5f\" stroke=\"black\" stroke-width=\"3\" fill=\"red\" />\n",c->x, c->y, c->radius);
 
- 		/* Search for possible closest intersection. */
-    int isect = 0;
+		/* Search for possible closest intersection. */
+		int isect = 0;
 		int s1 = 0;
 		int s2 = 0;
 		node_t * j;
@@ -313,7 +313,7 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 				}
 			}
 		}
- 		/* Update node chain. */
+		/* Update node chain. */
 		if(isect == 0) {
 			insert(a, c);
 			b = c;
@@ -323,15 +323,15 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 		}
 		else if(isect > 0) {
 			if(debug) fprintf(stderr,"Forward splicing nodes a=%i and j=%i\n",a->num,j->num);
-		  splice(a,j);
-	    b = j;
-	    skip=1;
-	  } else if (isect < 0) {
+			splice(a,j);
+			b = j;
+			skip=1;
+		} else if (isect < 0) {
 			if(debug) fprintf(stderr,"Back splicing nodes j=%i and b=%i\n",j->num,b->num);
-	    splice(j,b);
-	    a = j;
-	    skip=1;
-	  }
+			splice(j,b);
+			a = j;
+			skip=1;
+		}
 	}
 
 	return a;
@@ -342,39 +342,39 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 
 int main (int argc, char **argv) {
 
-  char *inputfilename = NULL;
+	char *inputfilename = NULL;
 	int debug = 0;
 	int generate_colors = 0;
 
 	node_t * firstnode = NULL;
 	node_t * lastinsertednode = NULL;
 
-  node_t * bb_bottomleft = alloc_node(0,-1);
+	node_t * bb_bottomleft = alloc_node(0,-1);
 	bb_bottomleft->y = (double)INT_MAX;
 	bb_bottomleft->x = (double)INT_MAX;
-  node_t * bb_topright = alloc_node(0,-1);
+	node_t * bb_topright = alloc_node(0,-1);
 	bb_topright->y = (double)INT_MIN;
 	bb_topright->x = (double)INT_MIN;
 
 	/* parse command line */
-  opterr = 0;
+	opterr = 0;
 	int optc;
-  while((optc = getopt (argc, argv, "cdi:")) != -1) {
-    switch(optc) {
-      case 'i':
-        inputfilename = optarg;
-        break;
+	while((optc = getopt (argc, argv, "cdi:")) != -1) {
+		switch(optc) {
+			case 'i':
+				inputfilename = optarg;
+				break;
 			case 'd':
 				debug = 1;
 				break;
 			case 'c':
 				generate_colors = 1;
 				break;
-      default:
-        usage(argv[0]);
+			default:
+				usage(argv[0]);
 		}
 	}
-	
+
 	if(!inputfilename) {
 		printf("Missing input filename.\n");
 		usage(argv[0]);
@@ -385,7 +385,7 @@ int main (int argc, char **argv) {
 		fprintf(stderr,"Could not open file %s\n",inputfilename);
 		usage(argv[0]);
 	}
-	
+
 	int num_circles = 0;
 	int counter = 0;
 	srand((uint)time(NULL));
@@ -408,7 +408,7 @@ int main (int argc, char **argv) {
 			lastinsertednode = n;
 		}
 		counter++;
-	
+
 		/* check for additional columns with color and name */
 		char * firsttab = strchr(line,'\t');
 		if(firsttab)  { 
@@ -457,7 +457,7 @@ int main (int argc, char **argv) {
 	node_t * a = placeCircles(firstnode,bb_topright,bb_bottomleft,debug);
 
 	printSVG(firstnode,a,bb_topright,bb_bottomleft,debug);
-	
+
 	/* go through all nodes and free */
 	node_t * n = firstnode; 
 	while(n) {
