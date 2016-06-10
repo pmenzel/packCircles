@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -Wall -Wconversion -O3 -g
+CCFLAGS = -Wall -Wconversion -O3 -g -ansi -pedantic -std=gnu99
 LDLIBS = -lm
 
 all: packCircles

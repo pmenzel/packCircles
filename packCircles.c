@@ -42,6 +42,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include <getopt.h>
 
 #include "packCircles.h"
 
@@ -59,10 +60,10 @@ void usage(char *progname) {
 }
 
 // h,s,v must be floats in the intervall [0,1[
-static void hsv2rgb(double h, double s, double v, uint * r, uint * b, uint * g) {
+static void hsv2rgb(double h, double s, double v, unsigned int * r, unsigned int * b, unsigned int * g) {
 
 	if(s==0.0) {
-		*r = (uint)floor(v*256); *g = (uint)floor(v*256); *b = (uint)floor(v*256);
+		*r = (unsigned int)floor(v*256); *g = (unsigned int)floor(v*256); *b = (unsigned int)floor(v*256);
 		return;
 	}
 
@@ -73,22 +74,22 @@ static void hsv2rgb(double h, double s, double v, uint * r, uint * b, uint * g) 
 	double t = v * ( 1 - s * (1 - f));
 
 	if(i == 0) {
-		*r = (uint)floor(v*256); *g = (uint)floor(t*256); *b = (uint)floor(p*256);
+		*r = (unsigned int)floor(v*256); *g = (unsigned int)floor(t*256); *b = (unsigned int)floor(p*256);
 	}
 	else if(i == 1) {
-		*r = (uint)floor(q*256); *g = (uint)floor(v*256); *b = (uint)floor(p*256);
+		*r = (unsigned int)floor(q*256); *g = (unsigned int)floor(v*256); *b = (unsigned int)floor(p*256);
 	}
 	else if(i == 2) {
-		*r = (uint)floor(p*256); *g = (uint)floor(v*256); *b = (uint)floor(t*256);
+		*r = (unsigned int)floor(p*256); *g = (unsigned int)floor(v*256); *b = (unsigned int)floor(t*256);
 	}
 	else if(i == 3) {
-		*r = (uint)floor(p*256); *g = (uint)floor(q*256); *b = (uint)floor(v*256);
+		*r = (unsigned int)floor(p*256); *g = (unsigned int)floor(q*256); *b = (unsigned int)floor(v*256);
 	}
 	else if(i == 4) {
-		*r = (uint)floor(t*256); *g = (uint)floor(p*256); *b = (uint)floor(v*256);
+		*r = (unsigned int)floor(t*256); *g = (unsigned int)floor(p*256); *b = (unsigned int)floor(v*256);
 	}
 	else {
-		*r = (uint)floor(v*256); *g = (uint)floor(p*256); *b = (uint)floor(q*256);
+		*r = (unsigned int)floor(v*256); *g = (unsigned int)floor(p*256); *b = (unsigned int)floor(q*256);
 	}
 }
 
@@ -388,7 +389,7 @@ int main (int argc, char **argv) {
 
 	int num_circles = 0;
 	int counter = 0;
-	srand((uint)time(NULL));
+	srand((unsigned int)time(NULL));
 	double h = generate_colors ? (double)rand()/(double)(RAND_MAX) : 0.0;
 	char *line = NULL;
 	size_t size = 0;;
@@ -437,7 +438,7 @@ int main (int argc, char **argv) {
 			}
 		}
 		if(generate_colors && n->color==NULL) {
-			uint r,g,b;
+			unsigned int r,g,b;
 			hsv2rgb(h,0.5,0.95,&r,&g,&b);
 			h += 0.618033988749895; // golden ration conjugate
 			h = fmod(h,1);

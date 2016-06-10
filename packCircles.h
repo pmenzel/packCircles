@@ -21,7 +21,7 @@ typedef struct node {
 } node_t;
 
 void usage(char *progname);
-static void hsv2rgb(double h, double s, double v, uint * r, uint * b, uint * g);
+static void hsv2rgb(double h, double s, double v, unsigned int * r, unsigned int * b, unsigned int * g);
 static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t * bb_bottomleft, int debug);
 static node_t * alloc_node(unsigned long size_, int num_);
 static void bound(node_t * n, node_t * topright, node_t * bottomleft);
