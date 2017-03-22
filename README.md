@@ -1,4 +1,4 @@
-#packCircles
+# packCircles
 
 version 1.0
 
@@ -6,7 +6,7 @@ Author:
 Peter Menzel <pmenzel@gmail.com>   
 
 
-##About
+## About
 packCircles arranges a list of circles, which are denoted by their area,
 by consecutively placing each circle externally tangent to two previously placed
 circles at the point closest to the midpoint of the plot.
@@ -22,7 +22,7 @@ in the [ProtoVis javascript library](http://mbostock.github.io/protovis/).
 
 ![Example](https://pmenzel.github.com/packCircles/example.gif)
 
-##Usage 
+## Usage 
 Download:
 ```
 git clone https://github.com/pmenzel/packCircles.git
@@ -47,7 +47,7 @@ no assigned colors in the input file. Colors are selected from the HSV color spa
 by applying [this method](http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/) for iteratively
 choosing new values for H using the Golden Ratio, and using fixed values for S (0.5) and V (0.9).
 
-###License
+### License
 
 Copyright (c) 2016 Peter Menzel 
 
