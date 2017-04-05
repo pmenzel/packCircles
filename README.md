@@ -2,8 +2,7 @@
 
 version 1.0
 
-Author:  
-Peter Menzel <pmenzel@gmail.com>   
+Author: Peter Menzel <pmenzel@gmail.com>
 
 
 ## About
@@ -13,7 +12,7 @@ circles at the point closest to the midpoint of the plot.
 The output is an SVG file.
 
 The program implements the algorithm described in the paper:
-"Visualization of large hierarchical data by circle packing" 
+"Visualization of large hierarchical data by circle packing"
 by Weixin Wang, Hui Wang, Guozhong Dai, and Hongan Wang
 in [Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 2006, pp. 517-520](https://dl.acm.org/citation.cfm?id=1124851).
 
@@ -22,7 +21,7 @@ in the [ProtoVis javascript library](http://mbostock.github.io/protovis/).
 
 ![Example](https://pmenzel.github.com/packCircles/example.gif)
 
-## Usage 
+## Usage
 Download:
 ```
 git clone https://github.com/pmenzel/packCircles.git
@@ -47,10 +46,15 @@ no assigned colors in the input file. Colors are selected from the HSV color spa
 by applying [this method](http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/) for iteratively
 choosing new values for H using the Golden Ratio, and using fixed values for S (0.5) and V (0.9).
 
-### License
+## R package
 
-Copyright (c) 2016 Peter Menzel 
+packCircles is also included in this [R package](https://github.com/mbedward/packcircles) by mbedward.
+
+## License
+
+Copyright (c) 2016 Peter Menzel
 
 The FreeBSD License applies for packCircles.
-See file LICENSE.
+
+See the file LICENSE.
 

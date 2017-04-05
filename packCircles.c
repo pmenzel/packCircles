@@ -1,17 +1,17 @@
 /*
  *  packCircles 1.0
- *  
- *  author: Peter Menzel
+ *
+ *  Copyright (c) 2016 Peter Menzel
  *
  *  ABOUT
  *  ********
- *	packCircles arranges a list of circles, which are denoted by their radii,
- *	by consecutively placing each circle externally tangent to two previously placed
- *	circles avoiding overlaps.
- *	The output is an SVG file.
+ *  packCircles arranges an ordered list of circles, which are denoted by their area,
+ *  by consecutively placing each circle externally tangent to two previously placed
+ *  circles avoiding overlaps.
+ *  The output is an SVG file.
  *
- *	The program implements the algorithm described in the paper:
- *  "Visualization of large hierarchical data by circle packing" 
+ *  The program implements the algorithm described in the paper:
+ *  "Visualization of large hierarchical data by circle packing"
  *  by Weixin Wang, Hui Wang, Guozhong Dai, and Hongan Wang
  *  in Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 2006, pp. 517-520
  *  https://dl.acm.org/citation.cfm?id=1124851
@@ -20,24 +20,31 @@
  *  in the ProtoVis javascript library:
  *  http://mbostock.github.io/protovis/
  *
- *  USAGE 
- *  ********
+ *  USAGE
+ *  *****
  *  Compile with: gcc -O3 -o packCircles packCircles.c -lm
  *
  *  Run with: ./packCircles -i INPUTFILE > output.svg
  *
- *  The input file has at least one unsigned long number per line that denotes the 
- *  area of the circle. 
+ *  The input file has at least one unsigned long number per line that denotes the
+ *  area of the circle.
  *  Two additional tab-separated columns can be used for the fill color and the
- *  name of each circle, which will be used in the title element for each
- *  circle.
+ *  name of each circle, which will be used in the SVG title element.
+ *
  *  Colors need to be valid CSS color names, e.g. red, #12AB56, or rgb(123,89,12)
+ *
+ * LICENSE
+ * *******
+ *
+ * The FreeBSD License applies for packCircles.
+ *
+ * See the file LICENSE.
  *
  * */
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
-#include <float.h> 
+#include <float.h>
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
@@ -47,7 +54,7 @@
 #include "packCircles.h"
 
 
-void usage(char *progname) { 
+void usage(char *progname) {
 	fprintf(stderr, "Usage:\n  %s -i FILENAME\n", progname);
 	fprintf(stderr, "\n");
 	fprintf(stderr, "Mandatory arguments:\n");
@@ -114,7 +121,7 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 	double offset_x = (bb_bottomleft->x + bb_topright->x) / 2.0;
 	double offset_y = (bb_bottomleft->y + bb_topright->y) / 2.0;
 
-	node_t * n = first; 
+	node_t * n = first;
 	while(n) {
 		n->x -= offset_x;
 		n->y -= offset_y;
@@ -135,7 +142,7 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 			printf("<line x1=\"%.5f\" y1=\"%.5f\" x2=\"%.5f\" y2=\"%.5f\" style=\"stroke:black;stroke-width:%.1f;\" />\n",a->x,a->y,b->x,b->y,stroke_width);
 			a = b;
 			b = b->next;
-		} while(b != a_->next); 
+		} while(b != a_->next);
 	}
 	printf("</g>\n");
 	printf("</svg>\n");
@@ -144,7 +151,7 @@ static void printSVG(node_t * first, node_t * a_, node_t * bb_topright, node_t *
 static node_t * alloc_node(unsigned long size_, int num_){
 	node_t * n = (node_t *)malloc(sizeof(node_t));
 	n->size = size_; // this corresponds to the circle area
-	//calculate radius from circle area 
+	//calculate radius from circle area
 	// A = pi * r^2   ->  r = sqrt(A/pi)
 	double r = sqrt((double)size_ / M_PI);
 	n->radius = r;
@@ -194,7 +201,7 @@ static int intersects(node_t * a, node_t * b) {
 	if((dr * dr - dx * dx - dy * dy) > 0.001) // overlap is bigger than epsilon
 		return 1;
 	else
-		return 0; 
+		return 0;
 }
 
 
@@ -266,7 +273,7 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 			double nearestdist = FLT_MAX;
 			do {
 				double dist_n = distance(n);
-				if(dist_n < nearestdist) {	
+				if(dist_n < nearestdist) {
 					nearestdist = dist_n;
 					nearestnode = n;
 				}
@@ -274,7 +281,7 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 			} while(n !=a );
 
 			if(debug) fprintf(stderr,"Node %i is nearest to the origin\n",nearestnode->num);
-			a = nearestnode; 
+			a = nearestnode;
 			b = nearestnode->next;
 			skip=0;
 		}
@@ -412,10 +419,10 @@ int main (int argc, char **argv) {
 
 		/* check for additional columns with color and name */
 		char * firsttab = strchr(line,'\t');
-		if(firsttab)  { 
+		if(firsttab)  {
 			char * secondtab = strchr(firsttab+1,'\t');
 			unsigned long length_color = 0;
-			if(secondtab)  { 
+			if(secondtab)  {
 				length_color = (long unsigned int)(secondtab - firsttab); //this pans out to the length of the chars between the tabs + 1 for \0 at the end
 				unsigned long length_name = (long unsigned int)(line + length_line - secondtab - 1); // -1 at the end to exclude the newline
 				if(length_name > 0) {
@@ -460,7 +467,7 @@ int main (int argc, char **argv) {
 	printSVG(firstnode,a,bb_topright,bb_bottomleft,debug);
 
 	/* go through all nodes and free */
-	node_t * n = firstnode; 
+	node_t * n = firstnode;
 	while(n) {
 		node_t * next = n->insertnext;
 		free(n->name);
