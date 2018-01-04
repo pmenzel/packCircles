@@ -9,10 +9,10 @@ typedef struct node {
 	char * color;
 	char * name;
 	/* link chain */
-	struct node * next;  
-	struct node * prev; 
+	struct node * next;
+	struct node * prev;
 	/* insertion order */
-	struct node * insertnext; 
+	struct node * insertnext;
 	int num;
 	/* circle attributes */
 	double x;

@@ -184,21 +184,26 @@ static void place(node_t * a, node_t * b, node_t * c) {
 	double dx = b->x - a->x;
 	double dy = b->y - a->y;
 	double dc = sqrt(dx * dx + dy * dy);
-	double cos = (db * db + dc * dc - da * da) / (2 * db * dc);
-	double theta = acos(cos);
-	double x = cos * db;
-	double h = sin(theta) * db;
-	dx /= dc;
-	dy /= dc;
-	c->x = a->x + x * dx + h * dy;
-	c->y = a->y + x * dy - h * dx;
+	if(dc>0.0) {
+		double cos = (db * db + dc * dc - da * da) / (2 * db * dc);
+		double theta = acos(cos);
+		double x = cos * db;
+		double h = sin(theta) * db;
+		dx /= dc;
+		dy /= dc;
+		c->x = a->x + x * dx + h * dy;
+		c->y = a->y + x * dy - h * dx;
+	} else {
+		c->x = a->x + db;
+		c->y = a->y;
+	}
 }
 
 static int intersects(node_t * a, node_t * b) {
 	double dx = b->x - a->x;
 	double dy = b->y - a->y;
-	double dr = (double)a->radius + (double)b->radius;
-	if((dr * dr - dx * dx - dy * dy) > 0.001) // overlap is bigger than epsilon
+	double dr = a->radius + b->radius;
+	if(dr * dr - 1e-6 > dx * dx + dy * dy) // overlap is bigger than epsilon
 		return 1;
 	else
 		return 0;
@@ -293,52 +298,47 @@ static node_t * placeCircles(node_t * firstnode, node_t * bb_topright, node_t * 
 
 		/* for debugging: initial placement of c that may ovelap */
 		//printf("<circle cx=\"%.5f\" cy=\"%.5f\" r=\"%.5f\" stroke=\"black\" stroke-width=\"3\" fill=\"red\" />\n",c->x, c->y, c->radius);
-
-		/* Search for possible closest intersection. */
 		int isect = 0;
-		int s1 = 0;
-		int s2 = 0;
-		node_t * j;
-		for(j = b->next; j != b ; j = j->next, s1++) {
-			//for debugging fprintf(stderr,"forw: testing intersection of nodes %i and %i\n",c->num,j->num);
-			if(intersects(j, c)) {
-				if(debug) fprintf(stderr,"Node %i intersects with node %i\n",c->num,j->num);
-				isect = 1;
-				break;
-			}
-		}
-		if(isect == 1) {
-			node_t * k;
-			for(k = a->prev; k != j->prev; k = k->prev, s2++) {
-				//for debugging fprintf(stderr,"back: testing intersection of nodes %i and %i\n",c->num,j->num);
-				if(intersects(k, c)) {
-					if(debug) fprintf(stderr,"Node %i intersects with node %i\n",c->num,k->num);
-					if(s2 < s1) {
-						isect = -1;
-						j = k;
-					}
+		node_t * j = b->next;
+		node_t * k = a->prev;
+		double sj = b->radius;
+		double sk = a->radius;
+		//j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
+		do {
+			if(sj <= sk) {
+				if(debug) fprintf(stderr,"forw: testing intersection of nodes %i and %i\n",c->num,j->num);
+				if(intersects(j, c)) {
+					if(debug) fprintf(stderr,"Node %i intersects with node %i\n",c->num,j->num);
+					splice(a,j);
+					b = j;
+					skip = 1;
+					isect = 1;
 					break;
 				}
+				sj += j->radius;
+			  j = j->next;
+			} else {
+				if(debug) fprintf(stderr,"back: testing intersection of nodes %i and %i\n",c->num,k->num);
+				if(intersects(k,c)) {
+					if(debug) fprintf(stderr,"Node %i intersects with node %i\n",c->num,k->num);
+					splice(k,b);
+					a = k;
+					skip = 1;
+					isect = 1;
+					break;
+				}
+				sk += k->radius;
+				k = k->prev;
 			}
-		}
-		/* Update node chain. */
-		if(isect == 0) {
+		} while(j != k->next);
+
+		if(isect==0) {
+			/* Update node chain. */
 			insert(a, c);
 			b = c;
 			bound(c,bb_topright,bb_bottomleft);
 			skip = 0;
 			c = c->insertnext;
-		}
-		else if(isect > 0) {
-			if(debug) fprintf(stderr,"Forward splicing nodes a=%i and j=%i\n",a->num,j->num);
-			splice(a,j);
-			b = j;
-			skip=1;
-		} else if (isect < 0) {
-			if(debug) fprintf(stderr,"Back splicing nodes j=%i and b=%i\n",j->num,b->num);
-			splice(j,b);
-			a = j;
-			skip=1;
 		}
 	}
 
