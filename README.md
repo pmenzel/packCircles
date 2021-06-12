@@ -19,7 +19,7 @@ in [Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, 
 Source code is partially based on a implementation of this algorithm
 in the [ProtoVis javascript library](http://mbostock.github.io/protovis/).
 
-![Example](https://pmenzel.github.com/packCircles/example.gif)
+![Example](https://pmenzel.github.io/packCircles/example.gif)
 
 ## Usage
 Download:
